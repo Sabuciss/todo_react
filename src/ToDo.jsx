@@ -1,9 +1,16 @@
 import { useState } from "react";
-function ToDo(){
-    <>
-        <label for=""> Iemācīties react</label>
-        <input  type="checkbox" ></input>
-    </>
-}
 
-export default ToDo;
+function ToDo({ task, completed }) {
+    return (
+      <label>
+       <input
+            type="checkbox"
+            checked={check}
+            onChange={() => setCheck(!check)}
+            />
+        {task}
+      </label>
+    );
+  }
+  
+  export default ToDo;
