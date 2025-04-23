@@ -1,4 +1,4 @@
-.diary-entry {
+.todo-item {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
@@ -8,4 +8,4 @@
     padding: 5px;
     border-radius: 20px;
     color: blueviolet;
-}
+  }
