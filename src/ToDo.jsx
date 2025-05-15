@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import './ToDo.css';
 
 function ToDo({id, task, completed, onDelete, onToggle, onEdit }) {
   const [check, setCheck] = useState(completed);
   const [isEditing, setIsEditing] = useState(false);
   const [editedTask, setEditedTask] = useState(task);
+ 
+    useEffect(() => {
+    setCheck(completed);  // ja mainās props, sinhronizē stāvokli
+  }, [completed]);
+
 
   function handleSave() {
     onEdit(id, editedTask, 'todo');

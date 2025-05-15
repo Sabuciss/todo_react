@@ -1,24 +1,6 @@
-import { useState, useEffect } from "react";
-import Diary from "./Diary"; // Importē Diary komponenti
+import Diary from "./Diary";
 
-function getLocalDiaries() {
-  const stored = localStorage.getItem("diaries");
-  return stored ? JSON.parse(stored) : [];
-}
-
-function DiariesList() {
-  const [diaries, setDiaries] = useState(getLocalDiaries);
-
-  
-
-  function handleDelete(id) {
-    setDiaries(diaries.filter(d => d.id !== id));
-  }
-
-  function handleEdit(id, updatedFields) {
-    setDiaries(diaries.map(d => (d.id === id ? { ...d, ...updatedFields } : d)));
-  }
-
+function DiariesList({ diaries, onDelete, onEdit }) {
   return (
     <>
       {diaries.map(({ id, title, body, date }) => (
@@ -28,8 +10,8 @@ function DiariesList() {
           title={title}
           body={body}
           date={date}
-          onDelete={handleDelete}
-          onEdit={handleEdit}
+          onDelete={onDelete}
+          onEdit={onEdit}
         />
       ))}
     </>
