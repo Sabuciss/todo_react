@@ -18,7 +18,7 @@ function ToDo({id, task, completed, onDelete, onToggle, onEdit }) {
 
   return (
     <article className="todo-item">
-      {/* Checkbox atsevišķi */}
+    
       <input
         type="checkbox"
         checked={check}
@@ -26,7 +26,7 @@ function ToDo({id, task, completed, onDelete, onToggle, onEdit }) {
       />
 
       {isEditing ? (
-        // Teksta lauks tikai uzdevuma rediģēšanai
+       
         <input
           type="text"
           value={editedTask}

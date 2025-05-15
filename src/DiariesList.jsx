@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import Diary from "./Diary"; // Importē Diary komponenti
 
-// Funkcija, kas nolasa dienasgrāmatas no localStorage
 function getLocalDiaries() {
   const stored = localStorage.getItem("diaries");
   return stored ? JSON.parse(stored) : [];
@@ -10,9 +9,7 @@ function getLocalDiaries() {
 function DiariesList() {
   const [diaries, setDiaries] = useState(getLocalDiaries);
 
-  useEffect(() => {
-    localStorage.setItem("diaries", JSON.stringify(diaries));
-  }, [diaries]);
+  
 
   function handleDelete(id) {
     setDiaries(diaries.filter(d => d.id !== id));
@@ -24,7 +21,6 @@ function DiariesList() {
 
   return (
     <>
-      {diaries.length === 0 && <p>Nav nevienas dienasgrāmatas.</p>}
       {diaries.map(({ id, title, body, date }) => (
         <Diary
           key={id}

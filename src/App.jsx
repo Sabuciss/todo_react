@@ -8,14 +8,16 @@ function getLocalTodos() {
   const stored = localStorage.getItem("todos");
   return stored ? JSON.parse(stored) : [];
 }
+function getLocalDiaries() {
+  const stored = localStorage.getItem("diaries");
+  return stored ? JSON.parse(stored) : [];
+}
 
 function App() {
  const [todos, setTodos] = useState(getLocalTodos);
-  const [diaries, setDiaries] = useState([
-    { id: 1, title: "Trešdeina,", body: "es gribu mājās", date: "2025-04-14" },
-    { id: 2, title: "Ceturdiena,", body: "diena pirms brīvdienām", date: "2025-04-14" },
-    { id: 3, title: "Piektdiena,", body: "brīvdiena", date: "2025-04-14" },
-  ]);
+const [diaries, setDiaries] = useState(getLocalDiaries);
+
+  
 
   useEffect(() => {
   localStorage.setItem("todos", JSON.stringify(todos));
@@ -62,7 +64,7 @@ function App() {
     if (type === 'todo') {
       setTodos(todos.map(todo => (todo.id === id ? { ...todo, task: newContent } : todo)));
     } else {
-      setDiaries(diaries.map(diary => (diary.id === id ? { ...diary, ...newContent } : diary)));
+     setDiaries(diaries.map(diary => (diary.id === id ? { ...diary, ...newContent } : diary)));
     }
   }
 
