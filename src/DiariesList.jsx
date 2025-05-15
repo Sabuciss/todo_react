@@ -1,52 +1,43 @@
-// DiariesList.jsx
-import React, { useState } from 'react';
+import { useState, useEffect } from "react";
+import Diary from "./Diary"; // Importē Diary komponenti
 
-function Diary({ id, title, body, date, onDelete, onEdit }) {
-  const [isEditingTitle, setIsEditingTitle] = useState(false);
-  const [isEditingBody, setIsEditingBody] = useState(false);
-  const [editedTitle, setEditedTitle] = useState(title);
-  const [editedBody, setEditedBody] = useState(body);
+// Funkcija, kas nolasa dienasgrāmatas no localStorage
+function getLocalDiaries() {
+  const stored = localStorage.getItem("diaries");
+  return stored ? JSON.parse(stored) : [];
+}
 
-  function handleTitleSave() {
-    onEdit(id, { title: editedTitle });
-    setIsEditingTitle(false);
+function DiariesList() {
+  const [diaries, setDiaries] = useState(getLocalDiaries);
+
+  useEffect(() => {
+    localStorage.setItem("diaries", JSON.stringify(diaries));
+  }, [diaries]);
+
+  function handleDelete(id) {
+    setDiaries(diaries.filter(d => d.id !== id));
   }
 
-  function handleBodySave() {
-    onEdit(id, { body: editedBody });
-    setIsEditingBody(false);
+  function handleEdit(id, updatedFields) {
+    setDiaries(diaries.map(d => (d.id === id ? { ...d, ...updatedFields } : d)));
   }
 
   return (
-    <article className="diary-entry">
-      <h3>
-        {isEditingTitle ? (
-          <input
-            value={editedTitle}
-            onChange={(e) => setEditedTitle(e.target.value)}
-            onBlur={handleTitleSave} // Saglabāt, kad iznāk ārā
-            onKeyDown={(e) => e.key === 'Enter' && handleTitleSave()} // Enter nospiežot
-            autoFocus
-          />
-        ) : (
-          <span onDoubleClick={() => setIsEditingTitle(true)}>{title}</span>
-        )}
-        <span>{date}</span>
-      </h3>
-      {isEditingBody ? (
-        <textarea
-          value={editedBody}
-          onChange={(e) => setEditedBody(e.target.value)}
-          onBlur={handleBodySave}
-          onKeyDown={(e) => e.key === 'Enter' && handleBodySave()} // Enter nospiežot
-          autoFocus
+    <>
+      {diaries.length === 0 && <p>Nav nevienas dienasgrāmatas.</p>}
+      {diaries.map(({ id, title, body, date }) => (
+        <Diary
+          key={id}
+          id={id}
+          title={title}
+          body={body}
+          date={date}
+          onDelete={handleDelete}
+          onEdit={handleEdit}
         />
-      ) : (
-        <p onDoubleClick={() => setIsEditingBody(true)}>{body}</p>
-      )}
-      <button onClick={() => onDelete(id)}>❌</button>
-    </article>
+      ))}
+    </>
   );
 }
 
-export default Diary;
+export default DiariesList;

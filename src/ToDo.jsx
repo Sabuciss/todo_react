@@ -6,22 +6,33 @@ function ToDo({id, task, completed, onDelete, onToggle, onEdit }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTask, setEditedTask] = useState(task);
 
-  
   function handleSave() {
-    onEdit(id, editedTask);
+    onEdit(id, editedTask, 'todo');
     setIsEditing(false);
   }
-  
+
+  function handleToggle() {
+    setCheck(!check);
+    onToggle(id);
+  }
 
   return (
     <article className="todo-item">
+      {/* Checkbox atsevišķi */}
+      <input
+        type="checkbox"
+        checked={check}
+        onChange={handleToggle}
+      />
 
       {isEditing ? (
+        // Teksta lauks tikai uzdevuma rediģēšanai
         <input
+          type="text"
           value={editedTask}
           onChange={(e) => setEditedTask(e.target.value)}
-          onBlur={handleSave} // automātiska saglabāšana kad klikšķē ārpusē
-          onKeyDown={(e) => e.key === "Enter" && handleSave()} // Enter nospiežot
+          onBlur={handleSave}
+          onKeyDown={(e) => e.key === "Enter" && handleSave()}
           autoFocus
           className="edit-task-input"
         />
@@ -30,10 +41,10 @@ function ToDo({id, task, completed, onDelete, onToggle, onEdit }) {
       )}
 
       <button onClick={() => setIsEditing(true)}>✏️</button>
-
       <button onClick={() => onDelete(id)}>❌</button>
     </article>
   );
 }
+
   
   export default ToDo;

@@ -1,20 +1,29 @@
 import ToDo from "./ToDo";
 import Diary from './DiariesList';
 import './App.css';
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+
+function getLocalTodos() {
+  const stored = localStorage.getItem("todos");
+  return stored ? JSON.parse(stored) : [];
+}
 
 function App() {
-  // Uzdevumi un dienasgrāmatas ieraksti
-  const [todos, setTodos] = useState([
-    { id: 1, task: "Iemācīties React", completed: false },
-    { id: 2, task: "Iemācīties Laravel", completed: true },
-    { id: 3, task: "Nopirkt pienu", completed: false },
-  ]);
+ const [todos, setTodos] = useState(getLocalTodos);
   const [diaries, setDiaries] = useState([
     { id: 1, title: "Trešdeina,", body: "es gribu mājās", date: "2025-04-14" },
     { id: 2, title: "Ceturdiena,", body: "diena pirms brīvdienām", date: "2025-04-14" },
     { id: 3, title: "Piektdiena,", body: "brīvdiena", date: "2025-04-14" },
   ]);
+
+  useEffect(() => {
+  localStorage.setItem("todos", JSON.stringify(todos));
+}, [todos]);
+
+  useEffect(() => {
+    localStorage.setItem("diaries", JSON.stringify(diaries));
+  }, [diaries]);
 
   const [newTask, setNewTask] = useState("");
   const [newDiary, setNewDiary] = useState({
